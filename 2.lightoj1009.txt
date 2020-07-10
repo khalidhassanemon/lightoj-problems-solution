@@ -1,0 +1,96 @@
+#include<bits/stdc++.h>
+#define white 0
+#define black 1
+#define red 2
+const int high = 20009;
+using namespace std;
+
+int node,edge, vampire=0, lykan=0,ans=0;
+vector<int>adj[high];
+int color[high];
+int parent[high];
+void adj_clear()
+{
+    for(int i=0; i<high; i++)
+    {
+        adj[i].clear();
+    }
+}
+
+void bfs(int s)
+{
+    queue<int>q;
+    color[s]=black;
+    vampire++;
+    q.push(s);
+
+    while(!q.empty())
+    {
+        int x=q.front();
+        q.pop();
+
+        for(int i=0; i<adj[x].size(); i++)
+        {
+            int v=adj[x][i];
+
+            if(color[v]==white)
+            {
+                q.push(v);
+
+                if(color[x]==black)
+                {
+                    color[v]=red;
+                    lykan++;
+                }
+                else
+                {
+                    color[v]=black;
+                    vampire++;
+                }
+            }
+
+        }
+
+    }
+}
+int main()
+{
+    int t,ans,n,tc=0,i;
+    cin>>t;
+    while(t--)
+    {
+        adj_clear();
+        memset(color, 0, sizeof color);
+        vampire = 0;
+        lykan = 0;
+        ans = 0;
+        cin>>n;
+        node=n+1;
+        edge=n;
+        int u,v,y;
+        while(n--)
+        {
+            cin>>u>>v;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        for(i=0; i<high; i++)
+        {
+            if(!adj[i].empty() and color[i] == white)
+            {
+                vampire = 0;
+                lykan = 0;
+
+                bfs(i);
+
+                ans +=max(vampire,lykan);
+
+            }
+
+        }
+        cout<<"Case "<<++tc<<": "<<ans<<endl;
+    }
+    return 0;
+
+}
+
