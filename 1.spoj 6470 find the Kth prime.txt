@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef	    long long       ll;
+typedef	    vector<ll>      vll;
+#define     pb              push_back
+#define	    PB              pop_back
+#define     M               90000000
+vll prime;
+bool isPrime[90000001];
+void sieve()
+{
+    for(int i=1; i<=M; i++)
+        isPrime[i]=1;
+
+    isPrime[0]=isPrime[1]=0;
+    for(int i=2; i*i<=M; i++)
+    {
+        if(isPrime[i])
+        {
+            for(int j=i*i; j<=M; j+=i)
+                isPrime[j]=0;
+        }
+    }
+    for(int i=2; i<=M; i++)
+    {
+        if(isPrime[i]==1)
+            prime.pb(i);
+    }
+}
+int main()
+{
+    int q,n;
+    cin>>q;
+    sieve();
+    while(q--)
+    {
+        cin>>n;
+        cout<<prime[n-1]<<endl;
+    }
+    return 0;
+}
